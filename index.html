@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Calendo</title>
+  <style>
+    table {
+      border-color: gray;
+      border-width: 1px;
+      border-style: solid;
+
+      border-spacing: 0;
+    }
+
+    td {
+      width: calc(50vw / 7);
+      height: calc(50vw / 14);
+
+      border-color: gray;
+      border-width: 1px;
+      border-style: solid;
+
+      text-align: center;
+    }
+
+    .title {
+      height: 1ch;
+      font-size: 80%;
+    }
+
+    .content {
+      min-height: 5ch;
+    }
+  </style>
+</head>
+
+<body>
+  <table>
+    <tbody id="calendar">
+    </tbody>
+  </table>
+  <input type="month" id="select-date">
+  <div class="scheduler">
+  </div>
+</body>
+
+<script>
+  const calendar = document.getElementById("calendar")
+  const selectDate = document.getElementById("select-date")
+
+  const weeks = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+  const today = new Date()
+
+  selectDate.addEventListener("change", () => {
+    const value = selectDate.value.split("-")
+    NewCalender(parseInt(value[0]), parseInt(value[1]))
+  })
+  selectDate.value = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, "0")}`
+  selectDate.dispatchEvent(new Event("change"))
+  function NewCalender(year, month) {
+    // Calender Reset
+    while (calendar.childNodes.length > 0) {
+      calendar.childNodes[0].remove()
+    }
+    // Get month
+    //// Current
+    const monthStart = new Date(year, month - 1, 1)
+    const monthEnd = new Date(year, month, 0)
+    //// Prev
+    const prevMonthEnd = new Date(year, month - 1, 0)
+    const prevMonthDays = monthStart.getDay() - 1
+    const prevMonthDayStart = prevMonthEnd.getDate() - prevMonthDays
+    //// Next
+    const nextMonthStart = new Date(year, month, 1)
+    const nextMonthDays = 7 - (monthEnd.getDay() + 1)
+
+
+    // Day of the week
+    const header = document.createElement("tr")
+    for (let i = 0; i < 7; i++) {
+      const td = document.createElement("td")
+      td.classList.add("title")
+      td.innerText = weeks[i]
+      header.append(td)
+    }
+    calendar.append(header)
+
+
+    // Date
+    let tr = document.createElement("tr")
+    // Prev
+    for (let day = prevMonthDayStart; day <= prevMonthEnd.getDate(); day++) {
+      tr.append(createDate(prevMonthEnd.getFullYear(), prevMonthEnd.getMonth() + 1, day))
+    }
+    // Current
+    for (let day = 1; day <= monthEnd.getDate(); day++) {
+      tr.append(createDate(year, month, day))
+      if (tr.children.length % 7 == 0) {
+        calendar.append(tr)
+        tr = document.createElement("tr")
+      }
+    }
+    // Next
+    for (let day = 1; day <= nextMonthDays; day++) {
+      tr.append(createDate(nextMonthStart.getFullYear(), nextMonthStart.getMonth() + 1, day))
+    }
+    calendar.append(tr)
+  }
+
+  function createDate(year, month, day) {
+    const td = document.createElement("td")
+    td.classList.add("date")
+
+    const num = document.createElement("span")
+    num.classList.add("title")
+    num.innerText = day
+    td.append(num)
+
+    const content = document.createElement("div")
+    content.classList.add("content")
+    content.innerText = `Example\n${year},${month},${day}`
+    td.append(content)
+    return td
+  }
+
+  function addSchedule() {
+    console.log(`New Schedule${this.year},${this.month},${this.day}`)
+  }
+</script>
+
+</html>
