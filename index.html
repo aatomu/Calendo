@@ -6,7 +6,9 @@
   <title>Calendo</title>
   <style>
     :root {
-      --grid: calc(50vw / 6)
+      --full: calc(50vw / 6);
+      --half: calc(var(--full) / 2);
+      --quart: calc(var(--half) / 2);
     }
 
     table {
@@ -18,8 +20,8 @@
     }
 
     td {
-      width: var(--grid);
-      height: var(--grid);
+      width: var(--full);
+      height: var(--full);
 
       border-color: gray;
       border-width: 1px;
@@ -39,15 +41,16 @@
 
     .scheduler {
       display: grid;
-      max-width: calc(var(--grid)*4);
+      max-width: calc(var(--full)*4);
 
       grid-template:
-        "a b ." 1lh
-        "c d ." 1lh
-        "e f f" 1lh
-        "g h h" 1lh
-        ". h h" 5lh
-        / var(--grid) 2fr 1fr;
+        "a b ." calc(var(--quart))
+        "c d ." calc(var(--quart))
+        "e f ." calc(var(--quart))
+        "g h h" calc(var(--quart))
+        "i j j" calc(var(--quart))
+        ". j j" calc(var(--half) + var(--quart))
+        / var(--full) 2fr 1fr;
     }
   </style>
 </head>
@@ -59,14 +62,16 @@
   </table>
   <input type="month" id="select-date">
   <div class="scheduler">
-    <span style="grid-area: a;">予定開始</span>
-    <input style="grid-area: b;" type="datetime-local" id="schedule-start">
-    <span style="grid-area: c;">予定終了</span>
-    <input style="grid-area: d;" type="datetime-local" id="schedule-end">
-    <span style="grid-area: e;">名前</span>
-    <input style="grid-area: f;" type="text" id="schedule-title">
-    <span style="grid-area: g;">備考</span>
-    <textarea style="grid-area: h;" id="schedule-description"></textarea>
+    <span style="grid-area: a;">ID</span>
+    <input style="grid-area: b;" type="text" id="schedule-id" disabled>
+    <span style="grid-area: c;">予定開始</span>
+    <input style="grid-area: d;" type="datetime-local" id="schedule-start">
+    <span style="grid-area: e;">予定終了</span>
+    <input style="grid-area: f;" type="datetime-local" id="schedule-end">
+    <span style="grid-area: g;">名前</span>
+    <input style="grid-area: h;" type="text" id="schedule-title">
+    <span style="grid-area: i;">備考</span>
+    <textarea style="grid-area: j;" id="schedule-description"></textarea>
   </div>
 </body>
 
