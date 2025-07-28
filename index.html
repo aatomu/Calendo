@@ -11,6 +11,18 @@
       --quart: calc(var(--half) / 2);
     }
 
+    .window {
+      display: grid;
+      width: 80vw;
+      text-align: center;
+      grid-template:
+        "a a a a a a" auto
+        ". . b b . ." auto
+        ". c . . d ." auto
+        "e e e f f f" auto
+        / 1fr 1fr 1fr 1fr 1fr 1fr;
+    }
+
     table {
       border-color: gray;
       border-width: 1px;
@@ -41,37 +53,47 @@
 
     .scheduler {
       display: grid;
-      max-width: calc(var(--full)*4);
+      width: 100%;
 
       grid-template:
-        "a b ." calc(var(--quart))
-        "c d ." calc(var(--quart))
-        "e f ." calc(var(--quart))
-        "g h h" calc(var(--quart))
-        "i j j" calc(var(--quart))
-        ". j j" calc(var(--half) + var(--quart))
-        / var(--full) 2fr 1fr;
+        "a b ." calc(var(--quart)) "c d ." calc(var(--quart)) "e f ." calc(var(--quart)) "g h h" calc(var(--quart)) "i j j" calc(var(--quart)) ". j j" calc(var(--half) + var(--quart)) / var(--full) 2fr 1fr;
+    }
+
+    .todo {
+      width: 100%;
+      height: 100%;
+
+      box-sizing: border-box;
+      resize: none;
+      overflow: scroll;
     }
   </style>
 </head>
 
 <body>
-  <table>
-    <tbody id="calendar">
-    </tbody>
-  </table>
-  <input type="month" id="select-date">
-  <div class="scheduler">
-    <span style="grid-area: a;">ID</span>
-    <input style="grid-area: b;" type="text" id="schedule-id" disabled>
-    <span style="grid-area: c;">予定開始</span>
-    <input style="grid-area: d;" type="datetime-local" id="schedule-start">
-    <span style="grid-area: e;">予定終了</span>
-    <input style="grid-area: f;" type="datetime-local" id="schedule-end">
-    <span style="grid-area: g;">名前</span>
-    <input style="grid-area: h;" type="text" id="schedule-title">
-    <span style="grid-area: i;">備考</span>
-    <textarea style="grid-area: j;" id="schedule-description"></textarea>
+  <div class="window">
+    <table style="grid-area: a;">
+      <tbody id="calendar">
+      </tbody>
+    </table>
+    <input type="month" id="select-date" style="grid-area: b;">
+    <span style="grid-area: c;">Schedule Manager</span>
+    <span style="grid-area: d;">Free Text</span>
+    <div class="scheduler" style="grid-area: e;">
+      <span style="grid-area: a;">ID</span>
+      <input style="grid-area: b;" type="text" id="schedule-id" disabled>
+      <span style="grid-area: c;">予定開始</span>
+      <input style="grid-area: d;" type="datetime-local" id="schedule-start">
+      <span style="grid-area: e;">予定終了</span>
+      <input style="grid-area: f;" type="datetime-local" id="schedule-end">
+      <span style="grid-area: g;">名前</span>
+      <input style="grid-area: h;" type="text" id="schedule-title">
+      <span style="grid-area: i;">備考</span>
+      <textarea style="grid-area: j;" id="schedule-description"></textarea>
+    </div>
+    <textarea class="todo" id="todo" style="grid-area: f;">
+      aaaaaaaaaaaaaaaaa
+    </textarea>
   </div>
 </body>
 
